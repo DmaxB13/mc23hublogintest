@@ -1,10 +1,21 @@
-// Firebase Core
-document.write('<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></' + 'script>');
-document.write('<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></' + 'script>');
-document.write('<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></' + 'script>');
+// Load Firebase scripts dynamically
+const loadFirebase = async () => {
+    const scripts = [
+        "https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js",
+        "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js",
+        "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"
+    ];
 
-// Initialize Firebase
-document.addEventListener("DOMContentLoaded", () => {
+    for (const src of scripts) {
+        await new Promise((resolve) => {
+            const s = document.createElement("script");
+            s.src = src;
+            s.onload = resolve;
+            document.head.appendChild(s);
+        });
+    }
+
+    // Initialize Firebase AFTER all scripts load
     const firebaseConfig = {
         apiKey: "AIzaSyBMg2ffCPVmhI58kvOI3gAenyJHWRc9wME",
         authDomain: "isite-2-test.firebaseapp.com",
@@ -15,4 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     firebase.initializeApp(firebaseConfig);
-});
+    window.firebaseLoaded = true;
+
+    // Trigger navbar once Firebase is ready
+    document.dispatchEvent(new Event("firebase-ready"));
+};
+
+loadFirebase();

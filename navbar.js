@@ -1,5 +1,7 @@
 function renderNavbar(user, uuid) {
-    document.getElementById("navbar").innerHTML = `
+    const nav = document.getElementById("navbar");
+
+    nav.innerHTML = `
         <div class="nav-left">
             <button onclick="window.location='index.html'">Home</button>
         </div>
@@ -15,16 +17,19 @@ function renderNavbar(user, uuid) {
     `;
 }
 
-firebase.auth().onAuthStateChanged(async (user) => {
-    if (!user) {
-        renderNavbar(null, null);
-        return;
-    }
+async function loadNavbar() {
+    if (!window.firebaseLoaded) return;
 
-    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    firebase.auth().onAuthStateChanged(async (user) => {
+        if (!user) {
+            renderNavbar(null, null);
+            return;
+        }
 
-    let uuid = null;
-    if (doc.exists) uuid = doc.data().uuid;
+        const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+        renderNavbar(user, doc.exists ? doc.data().uuid : null);
+    });
+}
 
-    renderNavbar(user, uuid);
-});
+// Wait for firebase to finish loading
+document.addEventListener("firebase-ready", loadNavbar);
