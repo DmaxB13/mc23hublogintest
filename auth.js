@@ -1,5 +1,3 @@
-document.addEventListener("firebase-ready", () => {
-    firebase.auth().onAuthStateChanged((user) => {
-        window.currentUser = user;
-    });
+firebase.auth().onAuthStateChanged((user) => {
+    window.currentUser = user;
 });
