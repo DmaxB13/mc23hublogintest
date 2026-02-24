@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="firebase.js"></script>
+    <script src="auth.js"></script>
+    <script src="navbar.js" defer></script>
+</head>
+<body>
+
+<div id="navbar"></div>
+
+<h1>Admin Page</h1>
+<p>Only admins can see this.</p>
+
+<script>
+firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+        window.location = "index.html";
+        return;
+    }
+
+    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    
+    if (!doc.exists || doc.data().isAdmin !== true) {
+        window.location = "index.html";
+    }
+});
+</script>
+
+</body>
+</html>

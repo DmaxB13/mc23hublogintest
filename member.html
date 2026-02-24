@@ -1,33 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Page</title>
-    <script type="module" src="firebase.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="firebase.js"></script>
+    <script src="auth.js"></script>
+    <script src="navbar.js" defer></script>
 </head>
 <body>
-    <h2>Member Dashboard</h2>
-    <p id="userInfo"></p>
-    <button id="logoutBtn">Logout</button>
 
-    <script type="module">
-        import { auth, onAuthStateChanged, signOut } from "./firebase.js";
+<div id="navbar"></div>
 
-        const userInfo = document.getElementById("userInfo");
-        const logoutBtn = document.getElementById("logoutBtn");
+<h1>Member Area</h1>
+<p>You are logged in!</p>
 
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "login.html";
-            } else {
-                userInfo.innerText = "Logged in as: " + user.email;
-            }
-        });
-
-        logoutBtn.addEventListener("click", () => {
-            signOut(auth);
-        });
-    </script>
 </body>
 </html>
