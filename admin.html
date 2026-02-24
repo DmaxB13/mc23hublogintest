@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <script type="module" src="firebase.js"></script>
+</head>
+<body>
+    <h2>Admin Dashboard</h2>
+    <p id="adminInfo"></p>
+    <button id="logoutBtn">Logout</button>
+
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from "./firebase.js";
+
+        const adminEmail = "admin@example.com"; // ← CHANGE THIS
+        const adminInfo = document.getElementById("adminInfo");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (user.email !== adminEmail) {
+                alert("You are not an admin!");
+                window.location.href = "member.html";
+                return;
+            }
+
+            adminInfo.innerText = "Admin logged in as: " + user.email;
+        });
+
+        logoutBtn.addEventListener("click", () => {
+            signOut(auth);
+        });
+    </script>
+</body>
+</html>
