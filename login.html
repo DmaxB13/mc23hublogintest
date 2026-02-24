@@ -44,14 +44,16 @@
 <script>
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const email = email.value;
-    const password = document.getElementById("password").value;
+
+    const emailValue = document.getElementById("email").value;
+    const passwordValue = document.getElementById("password").value;
 
     try {
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+        await firebase.auth().signInWithEmailAndPassword(emailValue, passwordValue);
         window.location = "index.html";
     } catch (err) {
         document.getElementById("loginMessage").innerText = err.message;
+        console.error(err);
     }
 });
 </script>

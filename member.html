@@ -34,5 +34,15 @@
 <h1>Member Area</h1>
 <p>You are logged in!</p>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location = "login.html";
+        }
+    });
+});
+</script>
+
 </body>
 </html>
