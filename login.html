@@ -1,62 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="style.css">
-
-        <!-- LOAD FIREBASE FIRST -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
-    <!-- INIT FIREBASE -->
-    <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBMg2ffCPVmhI58kvOI3gAenyJHWRc9wME",
-        authDomain: "isite-2-test.firebaseapp.com",
-        projectId: "isite-2-test",
-        storageBucket: "isite-2-test.firebasestorage.app",
-        messagingSenderId: "333012577798",
-        appId: "1:333012577798:web:0141f6e35a0f9e48eb9d87"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <!-- LOAD AUTH + NAVBAR AFTER FIREBASE -->
-    <script src="auth.js"></script>
-    <script src="navbar.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – Mysite</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">⛏ Mysite</a>
+    <div id="nav-auth"></div>
+  </nav>
 
-<div id="navbar"></div>
+  <main class="center-page">
+    <div class="card">
+      <h2>Log In</h2>
+      <form id="login-form">
+        <label>Email
+          <input type="email" id="email" required placeholder="you@example.com"/>
+        </label>
+        <label>Password
+          <input type="password" id="password" required placeholder="••••••••"/>
+        </label>
+        <p id="login-error" class="error-msg"></p>
+        <button type="submit" class="btn full-width">Log In</button>
+      </form>
+    </div>
+  </main>
 
-<h2>Login</h2>
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { loginUser, onAuthChange } from './js/auth.js';
 
-<form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required><br>
-    <input type="password" id="password" placeholder="Password" required><br>
-    <button type="submit">Login</button>
-</form>
+    // Redirect if already logged in
+    onAuthChange(user => {
+      if (user) window.location.href = 'members.html';
+    });
 
-<p id="loginMessage"></p>
-
-<script>
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const emailValue = document.getElementById("email").value;
-    const passwordValue = document.getElementById("password").value;
-
-    try {
-        await firebase.auth().signInWithEmailAndPassword(emailValue, passwordValue);
-        window.location = "index.html";
-    } catch (err) {
-        document.getElementById("loginMessage").innerText = err.message;
-        console.error(err);
-    }
-});
-</script>
-
+    document.getElementById('login-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errEl = document.getElementById('login-error');
+      errEl.textContent = '';
+      try {
+        await loginUser(email, password);
+        window.location.href = 'members.html';
+      } catch (err) {
+        errEl.textContent = 'Invalid email or password.';
+      }
+    });
+  </script>
 </body>
 </html>

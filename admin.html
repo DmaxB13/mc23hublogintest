@@ -1,55 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Page</title>
-    <link rel="stylesheet" href="style.css">
-
-        <!-- LOAD FIREBASE FIRST -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
-    <!-- INIT FIREBASE -->
-    <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBMg2ffCPVmhI58kvOI3gAenyJHWRc9wME",
-        authDomain: "isite-2-test.firebaseapp.com",
-        projectId: "isite-2-test",
-        storageBucket: "isite-2-test.firebasestorage.app",
-        messagingSenderId: "333012577798",
-        appId: "1:333012577798:web:0141f6e35a0f9e48eb9d87"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <!-- LOAD AUTH + NAVBAR AFTER FIREBASE -->
-    <script src="auth.js"></script>
-    <script src="navbar.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin – Mysite</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">⛏ Mysite</a>
+    <div id="nav-auth"></div>
+  </nav>
 
-<div id="navbar"></div>
+  <main class="center-page">
+    <div class="card">
+      <h2>🛠 Admin Panel</h2>
+      <p id="loading-msg">Checking permissions...</p>
+      <div id="admin-content" style="display:none">
+        <p>Welcome, admin! Here you can manage your site.</p>
+        <!-- Add admin tools here -->
+      </div>
+      <p id="denied-msg" class="error-msg" style="display:none">
+        ❌ Access denied. Admins only.
+      </p>
+    </div>
+  </main>
 
-<h1>Admin Page</h1>
-<p>Only admins can see this.</p>
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { onAuthChange, getUserData } from './js/auth.js';
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    firebase.auth().onAuthStateChanged(async (user) => {
-        if (!user) {
-            window.location = "login.html";
-            return;
-        }
-
-        const doc = await firebase.firestore().collection("users").doc(user.uid).get();
-
-        if (!doc.exists || doc.data().isAdmin !== true) {
-            window.location = "index.html";
-        }
+    onAuthChange(async user => {
+      document.getElementById('loading-msg').style.display = 'none';
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      const data = await getUserData(user.uid);
+      if (data.role === 'admin') {
+        document.getElementById('admin-content').style.display = 'block';
+      } else {
+        document.getElementById('denied-msg').style.display = 'block';
+      }
     });
-});
-</script>
-
+  </script>
 </body>
 </html>

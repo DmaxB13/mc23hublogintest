@@ -1,38 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home</title>
-    <link rel="stylesheet" href="style.css">
-
-        <!-- LOAD FIREBASE FIRST -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
-    <!-- INIT FIREBASE -->
-    <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBMg2ffCPVmhI58kvOI3gAenyJHWRc9wME",
-        authDomain: "isite-2-test.firebaseapp.com",
-        projectId: "isite-2-test",
-        storageBucket: "isite-2-test.firebasestorage.app",
-        messagingSenderId: "333012577798",
-        appId: "1:333012577798:web:0141f6e35a0f9e48eb9d87"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <!-- LOAD AUTH + NAVBAR AFTER FIREBASE -->
-    <script src="auth.js"></script>
-    <script src="navbar.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mysite</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">⛏ Mysite</a>
+    <div id="nav-auth">
+      <!-- Filled by auth.js -->
+    </div>
+  </nav>
 
-<div id="navbar"></div>
+  <main class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Mysite</h1>
+      <p>Log in to access the member area.</p>
+      <a href="login.html" class="btn" id="hero-login-btn">Log In</a>
+    </div>
+  </main>
 
-<h1>Welcome to the site!</h1>
-<p>This is the public home page.</p>
-
+  <!-- Firebase -->
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { onAuthChange } from './js/auth.js';
+    onAuthChange(user => {
+      const btn = document.getElementById('hero-login-btn');
+      if (user) {
+        btn.textContent = 'Go to Members';
+        btn.href = 'members.html';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Members – Mysite</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">⛏ Mysite</a>
+    <div id="nav-auth"></div>
+  </nav>
+
+  <main class="center-page">
+    <div class="card">
+      <div id="member-info" style="display:none">
+        <img id="mc-head" src="" alt="Minecraft Head" class="mc-head-large"/>
+        <h2 id="welcome-msg"></h2>
+        <p>You're in the members area! 🎉</p>
+        <div id="admin-link-wrap" style="display:none;margin-top:1rem">
+          <a href="admin.html" class="btn">Go to Admin Panel</a>
+        </div>
+        <button id="logout-btn" class="btn btn-outline" style="margin-top:1.5rem">Log Out</button>
+      </div>
+      <p id="loading-msg">Loading...</p>
+    </div>
+  </main>
+
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { onAuthChange, logoutUser, getUserData } from './js/auth.js';
+
+    onAuthChange(async user => {
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+      const data = await getUserData(user.uid);
+      document.getElementById('loading-msg').style.display = 'none';
+      document.getElementById('member-info').style.display = 'block';
+      document.getElementById('welcome-msg').textContent = `Welcome, ${data.username || user.email}!`;
+
+      if (data.minecraftUUID) {
+        document.getElementById('mc-head').src =
+          `https://minotar.net/helm/${data.minecraftUUID}/64`;
+      }
+      if (data.role === 'admin') {
+        document.getElementById('admin-link-wrap').style.display = 'block';
+      }
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await logoutUser();
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
