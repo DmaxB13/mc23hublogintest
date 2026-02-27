@@ -8,7 +8,24 @@
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="nav-logo">⛏ Mysite</a>
+
+    <ul>
+      <li>
+        <a href="index.html" class="nav-logo">⛏ Mysite</a>
+      </li>
+      <li class="hideOnMobile"><a href="/index.html" class="selected">HEM</a></li>
+      <li class="hideOnMobile"><a href="/subsites/spelare.html">SPELARE</a></li>
+      <li class="hideOnMobile"><a href="/subsites/företag.html">FÖRETAG</a></li>
+      <li class="hideOnMobile"><a href="/subsites/övrigt.html">ÖVRIGT</a></li>
+      <li class="menu-button" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg></a></li>
+      <li id="nav-auth">
+        <!-- Filled by auth.js -->
+      </li>
+    </ul>
+
+
+
+    
     <div id="nav-auth">
       <!-- Filled by auth.js -->
     </div>
