@@ -46,6 +46,44 @@ body {
 
   z-index: 998;
 }
+nav svg {
+    fill: var(--primary-text);
+}
+nav img {
+    max-width: 130px;
+    position: relative;
+}
+nav ul {
+    width: 100%;
+
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+}
+nav li {
+    height: 80px;
+}
+nav li:last-child {
+    margin-left: auto;
+}
+nav a {
+    height: 100%;
+    padding: 0 10px;
+
+    text-decoration: none;
+    color: var(--primary-text);
+    font-size: 26px;
+
+    display: flex;
+    align-items: center;
+}
+.selected {
+    text-decoration: underline;
+}
+
+
+
+
 
 .nav-logo {
   font-size: 1.2rem;
