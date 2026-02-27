@@ -129,3 +129,46 @@ nav a {
         margin-left: 1vh;
     }
 }
+
+
+
+
+
+
+
+/* Login */
+
+.nav-logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.nav-login-btn {
+  padding: 0.45rem 1.1rem !important;
+  font-size: 0.9rem !important;
+}
+
+.nav-member-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text);
+  background: var(--border);
+  padding: 0.35rem 0.9rem 0.35rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.nav-member-btn:hover { background: #3a3e5a; }
+
+.nav-mc-head {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+  border-radius: 4px;
+}
